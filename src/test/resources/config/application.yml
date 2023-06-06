@@ -1,0 +1,56 @@
+spring:
+  profiles:
+    active: test # Activate "test" profile by default
+  jackson:
+    default-property-inclusion: non_null
+  messages:
+    basename: i18n/messages
+  mvc:
+    # Throw NoHandlerFoundException
+    # See https://stackoverflow.com/questions/36733254/spring-boot-rest-how-to-configure-404-resource-not-found#36734193
+    throw-exception-if-no-handler-found: true
+    problemdetails:
+      enabled: true
+  web:
+    resources:
+      # Throw NoHandlerFoundException
+      # See https://stackoverflow.com/questions/36733254/spring-boot-rest-how-to-configure-404-resource-not-found#36734193
+      add-mappings: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+  liquibase:
+    change-log: classpath:liquibase/master.yml
+  kafka:
+    producer:
+      key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    consumer:
+      key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      # Determine which offset to start reading from if the offset doesn't exist on the server.
+      # See https://docs.confluent.io/platform/current/installation/configuration/consumer-configs.html#auto-offset-reset
+      auto-offset-reset: latest
+    properties:
+      # Deserialize to the generated Avro class rather than a GenericRecord type
+      specific.avro.reader: true
+server:
+  tomcat:
+    # Allow pipe character in URL to support passing commas such as "createdAt,asc"
+    relaxed-query-chars: "|"
+logging:
+  level:
+    com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.wire: OFF
+application:
+  kafka:
+    topic: products
+    # Partition 1 for testing.
+    partitions: 1
+    # In production, this config should be equal to the number of Kafka brokers.
+    replicationFactor: 1
+    groupId: consumer

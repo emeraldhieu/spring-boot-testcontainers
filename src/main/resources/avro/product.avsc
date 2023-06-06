@@ -1,0 +1,20 @@
+{
+    "type": "record",
+    "name": "ProductMessage",
+    "namespace": "com.emeraldhieu.testcontainers.product",
+    "fields":
+    [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "price",
+            "type": "double"
+        }
+    ]
+}
