@@ -1,4 +1,4 @@
-package com.emeraldhieu.testcontainers.product.logic.exception;
+package com.emeraldhieu.testcontainers.product.logic;
 
 import lombok.Getter;
 

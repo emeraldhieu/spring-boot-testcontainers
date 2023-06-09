@@ -68,12 +68,9 @@ public class ProductController {
     )
     public ResponseEntity<List<ProductResponse>> listProducts(
         @Valid @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
-
-        @Valid @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
-
-        @Valid @RequestParam(value = "sortOrders", required = false, defaultValue = "updatedAt,desc") List<String> sortOrders
+        @Valid @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit
     ) {
-        Page<ProductResponse> productResponsePage = productService.list(offset, limit, sortOrders);
+        Page<ProductResponse> productResponsePage = productService.list(offset, limit);
         List<ProductResponse> productResponses = productResponsePage.stream()
             .collect(Collectors.toList());
         return ResponseEntity.ok(productResponses);

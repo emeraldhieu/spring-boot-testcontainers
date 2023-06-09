@@ -1,23 +1,15 @@
 package com.emeraldhieu.testcontainers.product.logic;
 
-import com.emeraldhieu.testcontainers.product.logic.event.ProductCreatedEvent;
-import com.emeraldhieu.testcontainers.product.logic.exception.ProductNotFoundException;
 import com.emeraldhieu.testcontainers.product.logic.mapping.ProductRequestMapper;
 import com.emeraldhieu.testcontainers.product.logic.mapping.ProductResponseMapper;
-import com.emeraldhieu.testcontainers.product.logic.sort.SortOrder;
-import com.emeraldhieu.testcontainers.product.logic.sort.SortOrderValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,7 +20,6 @@ public class DefaultProductService implements ProductService {
     private final ProductRepository productRepository;
     private final ProductRequestMapper productRequestMapper;
     private final ProductResponseMapper productResponseMapper;
-    private final SortOrderValidator sortOrderValidator;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
@@ -65,25 +56,10 @@ public class DefaultProductService implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ProductResponse> list(int offset, int limit, List<String> sortOrders) {
-        sortOrderValidator.validate(sortOrders);
-
-        List<Sort.Order> theSortOrders = getSortOrders(sortOrders);
-        Pageable pageable = PageRequest.of(offset, limit, Sort.by(theSortOrders));
+    public Page<ProductResponse> list(int offset, int limit) {
+        Pageable pageable = PageRequest.of(offset, limit);
         return productRepository.findAll(pageable)
             .map(productResponseMapper::toDto);
-    }
-
-    List<Sort.Order> getSortOrders(List<String> sortOrderStrs) {
-        return sortOrderStrs.stream()
-            .map(sortOrderStr -> {
-                SortOrder sortOrder = SortOrder.from(sortOrderStr);
-                String propertyName = sortOrder.getPropertyName();
-                String direction = sortOrder.getDirection();
-                return Sort.Order.by(propertyName)
-                    .with(Sort.Direction.fromString(direction));
-            })
-            .collect(Collectors.toList());
     }
 
     @Override

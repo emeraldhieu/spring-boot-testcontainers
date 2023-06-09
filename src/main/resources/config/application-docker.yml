@@ -12,9 +12,6 @@ spring:
     drop-first: true
     # Used for development to update the changelogs continuously
     clear-checksums: true
-  # Only "spring.kafka.bootstrap-servers" works.
-  # If "spring.kafka.producer.bootstrap-servers" was used, there would be an error "Connection to node -1 (localhost/127.0.0.1:9092) could not be established"
-  # It's worth to look into Kafka's autoconfiguration to see why.
   kafka:
     bootstrap-servers: "kafka0:9092"
     properties:

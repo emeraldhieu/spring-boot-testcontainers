@@ -6,9 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDateTime;
 
 @Builder(toBuilder = true)
 @Getter
@@ -25,18 +22,4 @@ public class ProductResponse {
 
     @JsonProperty("price")
     private final Double price;
-
-    @JsonProperty("createdBy")
-    private final String createdBy;
-
-    @JsonProperty("createdAt")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private final LocalDateTime createdAt;
-
-    @JsonProperty("updatedBy")
-    private final String updatedBy;
-
-    @JsonProperty("updatedAt")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private final LocalDateTime updatedAt;
 }

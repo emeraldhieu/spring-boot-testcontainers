@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 /**
- * A properties class for testing because it contains some properties not existed in application code.
+ * A properties class used for testing because it contains some properties not existed in {@link KafkaProperties}.
  * ---
  * {@link ConfigurationProperties} is scanned by {@link ConfigurationPropertiesScan}.
  */
