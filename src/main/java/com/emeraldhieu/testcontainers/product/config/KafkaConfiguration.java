@@ -7,6 +7,7 @@ import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.kafka.support.ProducerListener;
 
 import java.util.Map;
 
+@ConditionalOnProperty(value = "application.kafka.enabled", havingValue = "true") // used to disable Kafka in tests
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
