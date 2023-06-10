@@ -117,7 +117,7 @@ public class ProductDatabaseAndKafkaIT {
 
     @Test
     @Transactional
-    public void whenCreateAProduct_thenSendAKafkaMessageToConsumer() {
+    public void givenProductRequest_whenCreate_thenReturnProductAndSendKafkaMessage() {
         // GIVEN
         String name = "pizza";
         double price = 42;

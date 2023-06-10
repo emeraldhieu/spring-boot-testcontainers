@@ -2,10 +2,8 @@ package com.emeraldhieu.testcontainers.product.logic;
 
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 /**
- * An interface used to inverse dependency between controller and conrete service class.
+ * An interface that inverses the dependency between the controller and the concrete service class.
  * It's the "D" in SOLID.
  * Benefits:
  * + Can reuse the policy layer because it doesn't depend on details but depends on interface
@@ -18,7 +16,7 @@ public interface ProductService {
 
     ProductResponse update(String id, ProductRequest productRequest);
 
-    Page<ProductResponse> list(int offset, int limit, List<String> sortOrders);
+    Page<ProductResponse> list(int offset, int limit);
 
     ProductResponse get(String id);
 

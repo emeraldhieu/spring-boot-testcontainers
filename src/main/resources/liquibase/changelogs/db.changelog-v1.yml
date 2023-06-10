@@ -33,26 +33,6 @@ databaseChangeLog:
                   type: double
                   constraints:
                     nullable: false
-              - column:
-                  name: created_by
-                  type: varchar(32)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: created_at
-                  type: timestamp
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_by
-                  type: varchar(32)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: timestamp
-                  constraints:
-                    nullable: false
   - changeSet:
       id: initializeOrderTable
       author: emeraldhieu
@@ -76,21 +56,5 @@ databaseChangeLog:
                   header:  Price
                   name:  price
                   type:  double
-              - column:
-                  header:  Created by
-                  name:  created_by
-                  type:  varchar(32)
-              - column:
-                  header:  Created at
-                  name:  created_at
-                  type:  timestamp
-              - column:
-                  header:  Updated by
-                  name:  updated_by
-                  type:  varchar(32)
-              - column:
-                  header:  Updated at
-                  name:  updated_at
-                  type:  timestamp
             encoding:  UTF-8
             file:  liquibase/data/products.csv

@@ -2,7 +2,6 @@ package com.emeraldhieu.testcontainers.product.logic;
 
 import com.emeraldhieu.testcontainers.product.ProductMessage;
 import com.emeraldhieu.testcontainers.product.config.KafkaProperties;
-import com.emeraldhieu.testcontainers.product.logic.event.ProductCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
