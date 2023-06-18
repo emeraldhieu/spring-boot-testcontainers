@@ -80,11 +80,11 @@ public class ProductDatabaseAndKafkaIT {
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
         /**
-         * Configure Spring's datasource on the fly.
-         * This seems like the only working way.
-         * I've tried using "application.yml" but it doesn't work.
+         * Since docker container generates a random port,
+         * the JDBC URL on the fly has to be set on the fly.
          */
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
+
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
 
