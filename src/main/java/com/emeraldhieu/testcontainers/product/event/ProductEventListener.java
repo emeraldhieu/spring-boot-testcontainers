@@ -1,4 +1,4 @@
-package com.emeraldhieu.testcontainers.product.logic.event;
+package com.emeraldhieu.testcontainers.product.event;
 
 import com.emeraldhieu.testcontainers.product.ProductMessage;
 import com.emeraldhieu.testcontainers.product.config.KafkaProperties;
