@@ -1,6 +1,10 @@
-package com.emeraldhieu.testcontainers.product.logic;
+package com.emeraldhieu.testcontainers.product.logic.containers;
 
 import com.emeraldhieu.testcontainers.product.ProductApp;
+import com.emeraldhieu.testcontainers.product.logic.ProductEventListener;
+import com.emeraldhieu.testcontainers.product.logic.ProductRequest;
+import com.emeraldhieu.testcontainers.product.logic.ProductResponse;
+import com.emeraldhieu.testcontainers.product.logic.ProductService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -24,14 +28,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(
     classes = ProductApp.class,
     properties = {
-        // Disable Kafka for this test only
+        // Disable Kafka auto-configuration
         "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration"
     }
 )
 @Testcontainers
-public class ProductDatabaseWithScriptIT {
+public class PostgresWithScriptIT {
 
-    private static Logger logger = LoggerFactory.getLogger(ProductDatabaseWithScriptIT.class);
+    private static Logger logger = LoggerFactory.getLogger(PostgresWithScriptIT.class);
     private static Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(logger);
 
     /**
@@ -65,7 +69,7 @@ public class ProductDatabaseWithScriptIT {
     private ProductService productService;
 
     /**
-     * Override with an empty bean to avoid Kafka things.
+     * Override with an empty bean to disable the event listener.
      */
     @MockBean
     private ProductEventListener productEventListener;
