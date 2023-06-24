@@ -1,4 +1,4 @@
-package com.emeraldhieu.testcontainers.product.logic.mapping;
+package com.emeraldhieu.testcontainers.product.utility;
 
 import org.mapstruct.BeanMapping;
 import org.mapstruct.MappingTarget;

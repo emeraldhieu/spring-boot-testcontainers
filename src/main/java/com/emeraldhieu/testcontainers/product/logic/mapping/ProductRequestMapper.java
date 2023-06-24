@@ -2,6 +2,8 @@ package com.emeraldhieu.testcontainers.product.logic.mapping;
 
 import com.emeraldhieu.testcontainers.product.logic.Product;
 import com.emeraldhieu.testcontainers.product.logic.ProductRequest;
+import com.emeraldhieu.testcontainers.product.utility.IgnoreUnmappedMapperConfig;
+import com.emeraldhieu.testcontainers.product.utility.RequestMapper;
 import org.mapstruct.Mapper;
 
 /**
