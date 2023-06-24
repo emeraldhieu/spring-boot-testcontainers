@@ -1,7 +1,7 @@
 package com.emeraldhieu.testcontainers.product.logic.containers;
 
 import com.emeraldhieu.testcontainers.product.ProductApp;
-import com.emeraldhieu.testcontainers.product.logic.ProductEventListener;
+import com.emeraldhieu.testcontainers.product.logic.event.ProductEventListener;
 import com.emeraldhieu.testcontainers.product.logic.ProductRequest;
 import com.emeraldhieu.testcontainers.product.logic.ProductResponse;
 import com.emeraldhieu.testcontainers.product.logic.ProductService;

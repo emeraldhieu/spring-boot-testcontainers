@@ -1,4 +1,4 @@
-package com.emeraldhieu.testcontainers.product.logic;
+package com.emeraldhieu.testcontainers.product.logic.event;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

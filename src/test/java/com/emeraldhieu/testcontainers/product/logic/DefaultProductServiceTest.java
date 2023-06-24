@@ -1,5 +1,6 @@
 package com.emeraldhieu.testcontainers.product.logic;
 
+import com.emeraldhieu.testcontainers.product.logic.event.ProductCreatedEvent;
 import com.emeraldhieu.testcontainers.product.logic.mapping.ProductRequestMapper;
 import com.emeraldhieu.testcontainers.product.logic.mapping.ProductResponseMapper;
 import org.junit.jupiter.api.BeforeEach;
