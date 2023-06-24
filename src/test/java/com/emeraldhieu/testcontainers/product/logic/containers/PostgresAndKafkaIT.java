@@ -1,10 +1,12 @@
-package com.emeraldhieu.testcontainers.product.logic;
+package com.emeraldhieu.testcontainers.product.logic.containers;
 
 import com.emeraldhieu.testcontainers.product.ProductApp;
 import com.emeraldhieu.testcontainers.product.ProductMessage;
 import com.emeraldhieu.testcontainers.product.config.KafkaTestConfiguration;
 import com.emeraldhieu.testcontainers.product.config.KafkaTestProperties;
-import jakarta.transaction.Transactional;
+import com.emeraldhieu.testcontainers.product.logic.ProductRequest;
+import com.emeraldhieu.testcontainers.product.logic.ProductResponse;
+import com.emeraldhieu.testcontainers.product.logic.ProductService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,9 +41,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Import({
     KafkaTestConfiguration.class,
 })
-public class ProductDatabaseAndKafkaIT {
+public class PostgresAndKafkaIT {
 
-    private static Logger logger = LoggerFactory.getLogger(ProductDatabaseAndKafkaIT.class);
+    private static Logger logger = LoggerFactory.getLogger(PostgresAndKafkaIT.class);
     private static Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(logger);
 
     /**
@@ -116,7 +118,6 @@ public class ProductDatabaseAndKafkaIT {
     }
 
     @Test
-    @Transactional
     public void givenProductRequest_whenCreate_thenReturnProductAndSendKafkaMessage() {
         // GIVEN
         String name = "pizza";
