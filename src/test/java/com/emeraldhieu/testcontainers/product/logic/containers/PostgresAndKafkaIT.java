@@ -1,10 +1,12 @@
-package com.emeraldhieu.testcontainers.product.logic;
+package com.emeraldhieu.testcontainers.product.logic.containers;
 
 import com.emeraldhieu.testcontainers.product.ProductApp;
 import com.emeraldhieu.testcontainers.product.ProductMessage;
 import com.emeraldhieu.testcontainers.product.config.KafkaTestConfiguration;
 import com.emeraldhieu.testcontainers.product.config.KafkaTestProperties;
-import jakarta.transaction.Transactional;
+import com.emeraldhieu.testcontainers.product.logic.ProductRequest;
+import com.emeraldhieu.testcontainers.product.logic.ProductResponse;
+import com.emeraldhieu.testcontainers.product.logic.ProductService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,9 +41,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Import({
     KafkaTestConfiguration.class,
 })
-public class ProductDatabaseAndKafkaIT {
+public class PostgresAndKafkaIT {
 
-    private static Logger logger = LoggerFactory.getLogger(ProductDatabaseAndKafkaIT.class);
+    private static Logger logger = LoggerFactory.getLogger(PostgresAndKafkaIT.class);
     private static Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(logger);
 
     /**
@@ -49,7 +51,7 @@ public class ProductDatabaseAndKafkaIT {
      * All tests methods can trample on each other's data.
      */
     @Container
-    static PostgreSQLContainer<?> postgres =
+    private static PostgreSQLContainer<?> postgres =
         new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.3-alpine"))
             .withLogConsumer(logConsumer);
 
@@ -59,14 +61,14 @@ public class ProductDatabaseAndKafkaIT {
     private static String clusterId = "qYoMEZXcS_SKP2PzAl8-WA";
 
     @Container
-    static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
+    private static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
         .withNetwork(network)
         .withKraft()
         .withClusterId(clusterId)
         .withLogConsumer(logConsumer);
 
     @Container
-    static GenericContainer schemaRegistry =
+    private static GenericContainer schemaRegistry =
         new GenericContainer(DockerImageName.parse("confluentinc/cp-schema-registry:7.4.0"))
             .withNetwork(network)
             .withExposedPorts(8081) // Exposed port is used to get a mapped port. Otherwise, the error "Container doesn't expose any ports" occurs.
@@ -80,11 +82,16 @@ public class ProductDatabaseAndKafkaIT {
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
         /**
-         * Configure Spring's datasource on the fly.
-         * This seems like the only working way.
-         * I've tried using "application.yml" but it doesn't work.
+         * Since docker container generates a random port,
+         * the JDBC URL on the fly has to be set on the fly.
          */
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
+
+        /**
+         * You can set username and password either here or in the application properties.
+         * The default values are defined at
+         * {@link PostgreSQLContainer.DEFAULT_USER} and {@link PostgreSQLContainer.DEFAULT_PASSWORD}.
+         */
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
 
@@ -116,7 +123,6 @@ public class ProductDatabaseAndKafkaIT {
     }
 
     @Test
-    @Transactional
     public void givenProductRequest_whenCreate_thenReturnProductAndSendKafkaMessage() {
         // GIVEN
         String name = "pizza";

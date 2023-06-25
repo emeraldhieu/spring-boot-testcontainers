@@ -2,6 +2,7 @@ package com.emeraldhieu.testcontainers.product.logic.mapping;
 
 import com.emeraldhieu.testcontainers.product.logic.Product;
 import com.emeraldhieu.testcontainers.product.logic.ProductResponse;
+import com.emeraldhieu.testcontainers.product.utility.ResponseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

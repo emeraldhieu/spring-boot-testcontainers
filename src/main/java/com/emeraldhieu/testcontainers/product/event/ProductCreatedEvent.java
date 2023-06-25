@@ -1,6 +1,7 @@
-package com.emeraldhieu.testcontainers.product.logic;
+package com.emeraldhieu.testcontainers.product.event;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Builder
 @Getter
+@EqualsAndHashCode
 @RequiredArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class ProductCreatedEvent {
     private final String id;

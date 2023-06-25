@@ -1,6 +1,10 @@
-package com.emeraldhieu.testcontainers.product.logic;
+package com.emeraldhieu.testcontainers.product.logic.containers;
 
 import com.emeraldhieu.testcontainers.product.ProductApp;
+import com.emeraldhieu.testcontainers.product.event.ProductEventListener;
+import com.emeraldhieu.testcontainers.product.logic.ProductRequest;
+import com.emeraldhieu.testcontainers.product.logic.ProductResponse;
+import com.emeraldhieu.testcontainers.product.logic.ProductService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -24,14 +28,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(
     classes = ProductApp.class,
     properties = {
-        // Disable Kafka for this test only
+        // Disable Kafka auto-configuration
         "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration"
     }
 )
 @Testcontainers
-public class ProductDatabaseWithScriptIT {
+public class PostgresWithScriptIT {
 
-    private static Logger logger = LoggerFactory.getLogger(ProductDatabaseWithScriptIT.class);
+    private static Logger logger = LoggerFactory.getLogger(PostgresWithScriptIT.class);
     private static Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(logger);
 
     /**
@@ -39,7 +43,7 @@ public class ProductDatabaseWithScriptIT {
      * All tests methods can trample on each other's data.
      */
     @Container
-    static PostgreSQLContainer<?> postgres =
+    private static PostgreSQLContainer<?> postgres =
         new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.3-alpine"))
             .withUsername("postgres")
             .withPassword("postgres")
@@ -57,6 +61,11 @@ public class ProductDatabaseWithScriptIT {
          */
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
 
+        /**
+         * You can set username and password either here or in the application properties.
+         * The default values are defined at
+         * {@link PostgreSQLContainer.DEFAULT_USER} and {@link PostgreSQLContainer.DEFAULT_PASSWORD}.
+         */
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
     }
@@ -65,7 +74,7 @@ public class ProductDatabaseWithScriptIT {
     private ProductService productService;
 
     /**
-     * Override with an empty bean to avoid Kafka things.
+     * Override with an empty bean to disable the event listener.
      */
     @MockBean
     private ProductEventListener productEventListener;
