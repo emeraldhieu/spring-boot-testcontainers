@@ -51,7 +51,7 @@ public class PostgresAndKafkaIT {
      * All tests methods can trample on each other's data.
      */
     @Container
-    static PostgreSQLContainer<?> postgres =
+    private static PostgreSQLContainer<?> postgres =
         new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.3-alpine"))
             .withLogConsumer(logConsumer);
 
@@ -61,14 +61,14 @@ public class PostgresAndKafkaIT {
     private static String clusterId = "qYoMEZXcS_SKP2PzAl8-WA";
 
     @Container
-    static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
+    private static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
         .withNetwork(network)
         .withKraft()
         .withClusterId(clusterId)
         .withLogConsumer(logConsumer);
 
     @Container
-    static GenericContainer schemaRegistry =
+    private static GenericContainer schemaRegistry =
         new GenericContainer(DockerImageName.parse("confluentinc/cp-schema-registry:7.4.0"))
             .withNetwork(network)
             .withExposedPorts(8081) // Exposed port is used to get a mapped port. Otherwise, the error "Container doesn't expose any ports" occurs.
@@ -87,6 +87,11 @@ public class PostgresAndKafkaIT {
          */
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
 
+        /**
+         * You can set username and password either here or in the application properties.
+         * The default values are defined at
+         * {@link PostgreSQLContainer.DEFAULT_USER} and {@link PostgreSQLContainer.DEFAULT_PASSWORD}.
+         */
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
 

@@ -43,7 +43,7 @@ public class PostgresWithScriptIT {
      * All tests methods can trample on each other's data.
      */
     @Container
-    static PostgreSQLContainer<?> postgres =
+    private static PostgreSQLContainer<?> postgres =
         new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.3-alpine"))
             .withUsername("postgres")
             .withPassword("postgres")
@@ -61,6 +61,11 @@ public class PostgresWithScriptIT {
          */
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
 
+        /**
+         * You can set username and password either here or in the application properties.
+         * The default values are defined at
+         * {@link PostgreSQLContainer.DEFAULT_USER} and {@link PostgreSQLContainer.DEFAULT_PASSWORD}.
+         */
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
     }
