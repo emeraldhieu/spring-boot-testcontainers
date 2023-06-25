@@ -15,7 +15,7 @@ See the integration tests at the [package containers](https://github.com/emerald
 
 ## 2) Test containers
 
-[Testcontainers](https://java.testcontainers.org) is library that supports integration-testing your applications with external services by starting disposable Docker containers on the fly.
+[Testcontainers](https://java.testcontainers.org) is library that provides disposable Docker containers of common databases or any other services on the fly. The greatest benefit is that you don't need to prepare any external service on your host machine such as running a Docker Compose.
 
 ### Start Postgres
 
@@ -40,10 +40,10 @@ static void properties(DynamicPropertyRegistry registry) {
     registry.add("spring.datasource.url", postgres::getJdbcUrl);
     registry.add("spring.datasource.username", postgres::getUsername);
     registry.add("spring.datasource.password", postgres::getPassword);
-    }
+}
 ```
 
-The set-up is done! Now you can write your test code by any means such as injecting a service, using MockMvc.
+The set-up is done! Now you can write your test code by any means like injecting services or using MockMvc.
 
 Long story short, Testcontainers does all container configurations for you such as:
 + Pull the Docker image
@@ -55,7 +55,8 @@ Long story short, Testcontainers does all container configurations for you such 
 Declare a container with a Docker image name
 ```java
 @Container
-private static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
+private static KafkaContainer kafka =
+    new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
     .withNetwork(network)
     .withKraft()
     .withClusterId(clusterId);
@@ -66,7 +67,7 @@ Set bootstrap servers for Spring Boot's Kafka client
 @DynamicPropertySource
 static void properties(DynamicPropertyRegistry registry) {
     registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
-    }
+}
 ```
 
 ## 2) Run a group of tests
@@ -91,4 +92,3 @@ gradle test --tests "*IT"
 
 + [Database containers - Postgres Module](https://java.testcontainers.org/modules/databases/postgres)
 + [Kafka Containers](https://java.testcontainers.org/modules/kafka)
-

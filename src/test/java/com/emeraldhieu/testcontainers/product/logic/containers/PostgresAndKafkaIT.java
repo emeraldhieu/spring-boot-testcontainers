@@ -61,11 +61,12 @@ public class PostgresAndKafkaIT {
     private static String clusterId = "qYoMEZXcS_SKP2PzAl8-WA";
 
     @Container
-    private static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
-        .withNetwork(network)
-        .withKraft()
-        .withClusterId(clusterId)
-        .withLogConsumer(logConsumer);
+    private static KafkaContainer kafka =
+        new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"))
+            .withNetwork(network)
+            .withKraft()
+            .withClusterId(clusterId)
+            .withLogConsumer(logConsumer);
 
     @Container
     private static GenericContainer schemaRegistry =
