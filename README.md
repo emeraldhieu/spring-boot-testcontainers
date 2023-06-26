@@ -1,6 +1,6 @@
 # Spring Boot Test Containers
 
-A project that shows how to integration-test communications between Spring Boot apps and external services such as Postgres, Kafka, Schema Registry using Testcontainers.
+A project that demonstrates integration-testing communications between a Spring Boot app and external services such as Postgres, Kafka, and Schema Registry using Testcontainers.
 
 ## 1) Quickstart
 
@@ -70,7 +70,32 @@ static void properties(DynamicPropertyRegistry registry) {
 }
 ```
 
-## 2) Run a group of tests
+### Start Schema Registry
+
+Declare a container with a Docker image name
+```java
+@Container
+private static GenericContainer schemaRegistry =
+    new GenericContainer(DockerImageName.parse("confluentinc/cp-schema-registry:7.4.0"))
+        .withNetwork(network)
+        .withExposedPorts(8081)
+        .withEnv("SCHEMA_REGISTRY_HOST_NAME", "schema-registry")
+        .withEnv("SCHEMA_REGISTRY_LISTENERS", "http://0.0.0.0:8081")
+        .withEnv("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS",
+            "PLAINTEXT://" + kafka.getNetworkAliases().get(0) + ":9092")
+        .dependsOn(kafka);
+```
+
+Set Schema Registry URL for Kafka
+```java
+@DynamicPropertySource
+static void properties(DynamicPropertyRegistry registry) {
+    registry.add("spring.kafka.properties.schema.registry.url",
+    () -> "http://" + schemaRegistry.getHost() + ":" + schemaRegistry.getFirstMappedPort());
+}
+```
+
+## 3) Run a group of tests
 
 A fun thing about Gradle is you don't need any plugin such as Maven Surefire or Failsafe to run a group of tests.
 

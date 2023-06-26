@@ -97,8 +97,8 @@ public class PostgresAndKafkaIT {
         registry.add("spring.datasource.password", postgres::getPassword);
 
         registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
-        registry.add("spring.kafka.properties.schema.registry.url",
-            () -> "http://" + schemaRegistry.getHost() + ":" + schemaRegistry.getFirstMappedPort());
+//        registry.add("spring.kafka.properties.schema.registry.url",
+//            () -> "http://" + schemaRegistry.getHost() + ":" + schemaRegistry.getFirstMappedPort());
     }
 
     @Autowired
